@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HARVEST – Holistic AI-powered Agricultural Response Validation and Early Prediction System across Territories</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <style>
+        /* ─── CSS VARIABLES ─── */
+        :root {
+            --primary: #2d7a3a;
+            --primary-dark: #1a5226;
+            --secondary: #f5a623;
+            --accent: #7ed957;
+            --bg: #f7faf7;
+            --card-bg: #ffffff;
+            --text-dark: #1a2e1c;
+            --text-light: #4a6350;
+            --border-color: #d4e8d6;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 22px;
+            --shadow: 0 4px 24px rgba(45,122,58,0.08);
+            --shadow-hover: 0 12px 40px rgba(45,122,58,0.16);
+        }
+        [data-theme="dark"] {
+            --bg: #0f1a10;
+            --card-bg: #182219;
+            --text-dark: #e8f5e9;
+            --text-light: #9abf9e;
+            --border-color: #2a4030;
+            --shadow: 0 4px 24px rgba(0,0,0,0.4);
+            --shadow-hover: 0 12px 40px rgba(0,0,0,0.6);
+        }
+
+        /* ─── RESET & BASE ─── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; overflow-x: hidden;}
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.7;
+            transition: background 0.3s, color 0.3s;
+            padding-top: 64px;
+            overflow-x: hidden;
+        }
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        img { max-width: 100%; display: block; }
+
+        /* ─── NAVIGATION ─── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 2px 12px rgba(45,122,58,0.07);
+        }
+        .nav-container {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px; height: 64px;
+        }
+        .nav-logo-text {
+            font-weight: 700; font-size: 1.4rem;
+            color: var(--primary); letter-spacing: -0.5px;
+        }
+        .nav-links { display: flex; gap: 28px; align-items: center; }
+        .nav-links a {
+            font-size: 0.9rem; font-weight: 500;
+            color: var(--text-dark);
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--primary); text-decoration: none; }
+
+        /* ─── THEME SWITCH ─── */
+        .theme-switch-wrapper { display: flex; align-items: center; }
+        .theme-switch { position: relative; display: inline-block; width: 52px; height: 28px; }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; inset: 0;
+            background: var(--border-color); border-radius: 28px;
+            cursor: pointer; transition: background 0.3s;
+            display: flex; align-items: center; justify-content: space-between; padding: 4px 6px;
+        }
+        .slider i { font-size: 13px; color: var(--text-light); z-index: 1; }
+        .slider::before {
+            content: ''; position: absolute; left: 4px; top: 4px;
+            width: 20px; height: 20px; border-radius: 50%;
+            background: var(--primary); transition: transform 0.3s;
+        }
+        input:checked + .slider { background: var(--primary-dark); }
+        input:checked + .slider::before { transform: translateX(24px); }
+
+        /* ─── MOBILE MENU ─── */
+        .mobile-menu-btn {
+            display: none; background: none; border: none; cursor: pointer;
+            font-size: 1.4rem; color: var(--text-dark);
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: var(--card-bg); padding: 16px; gap: 12px; border-bottom: 1px solid var(--border-color); }
+            .nav-links.open { display: flex; }
+            .mobile-menu-btn { display: block; }
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            min-height: calc(100vh - 64px);
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            text-align: center; 
+            padding: 40px 24px;
+            position: relative;
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 900px; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px; padding: 6px 18px; margin-bottom: 28px;
+            font-size: 0.82rem; color: rgba(255,255,255,0.85); letter-spacing: 0.5px;
+        }
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 700; color: #ffffff;
+            letter-spacing: -2px; line-height: 1.1;
+            margin-bottom: 16px;
+        }
+        .hero h1 span { color: var(--accent); }
+        .hero-acronym {
+            font-size: clamp(0.85rem, 2vw, 1rem);
+            color: rgba(255,255,255,0.7);
+            font-weight: 400; letter-spacing: 1px;
+            margin-bottom: 24px; text-transform: uppercase;
+        }
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: rgba(255,255,255,0.8);
+            max-width: 680px; margin: 0 auto 36px;
+        }
+        .hero-cta {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: var(--accent); color: #0f2d14;
+            font-weight: 600; font-size: 0.95rem;
+            padding: 14px 32px; border-radius: 100px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+        }
+        .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(126,217,87,0.4); text-decoration: none; }
+        
+        .hero-scroll-indicator { margin-top: 40px; }
+        .hero-scroll-indicator a { color: rgba(255,255,255,0.5); font-size: 1.8rem; animation: bounce 2s infinite; display: inline-block; }
+        @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+
+        /* ─── SECTIONS ─── */
+        section { padding: 80px 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .section-title { text-align: center; margin-bottom: 40px; }
+        .section-title h2 {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: 700; color: var(--text-dark);
+            position: relative; display: inline-block;
+        }
+        .section-title h2::after {
+            content: ''; display: block; height: 4px; width: 60px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px; margin: 12px auto 0;
+        }
+        .section-title p { color: var(--text-light); margin-top: 12px; font-size: 1.05rem; }
+
+        section:nth-child(even) { background: var(--card-bg); }
+
+        /* ─── ABOUT & TYPEWRITER ─── */
+        .typewriter-container {
+            text-align: center;
+            margin-bottom: 32px;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            font-weight: 500;
+            color: var(--primary);
+            min-height: 2.5rem;
+        }
+        .typewriter-cursor {
+            animation: blink 0.7s infinite;
+            font-weight: 300;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .about-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;
+        }
+        @media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; } }
+        
+        .about-visual-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(15,45,20,0.85), transparent);
+            padding: 24px;
+        }
+        .about-visual-overlay span { color: white; font-weight: 600; font-size: 0.9rem; }
+        
+        .stat-strip {
+            display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-top: 24px;
+        }
+        @media (max-width: 576px) { .stat-strip { grid-template-columns: repeat(2,1fr); } }
+        .stat-item {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: var(--radius-md); padding: 20px;
+            text-align: center; box-shadow: var(--shadow);
+        }
+        .stat-item .num { font-size: 2rem; font-weight: 700; color: var(--primary); }
+        .stat-item .lbl { font-size: 0.78rem; color: var(--text-light); margin-top: 4px; }
+        
+        .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+        .tag {
+            background: rgba(45,122,58,0.1); color: var(--primary);
+            border-radius: 100px; padding: 4px 14px; font-size: 0.8rem; font-weight: 500;
+        }
+        
+        .about-slider {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+            height: 380px;
+            width: 100%;
+            box-shadow: var(--shadow);
+        }
+        .slider-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .slider-track img {
+            min-width: 100%;
+            height: 100%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .slider-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(0,0,0,0.4); color: white;
+            border: none; border-radius: 50%;
+            width: 40px; height: 40px; font-size: 1.3rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s; z-index: 2;
+        }
+        .slider-btn:hover { background: rgba(0,0,0,0.7); }
+        .slider-btn.prev { left: 12px; }
+        .slider-btn.next { right: 12px; }
+        
+        .slider-dots {
+            position: absolute; bottom: 48px; left: 50%;
+            transform: translateX(-50%); display: flex; gap: 8px; z-index: 2;
+        }
+        .dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.5); cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .dot.active { background: white; transform: scale(1.3); }
+
+        /* ─── RESEARCH THRUSTS ─── */
+        .thrust-list { display: flex; flex-direction: column; gap: 32px; }
+        .thrust-card {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg); padding: 32px 36px;
+            box-shadow: var(--shadow); position: relative; overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .thrust-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+        .thrust-card::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+        }
+        .thrust-header { display: flex; align-items: flex-start; gap: 18px; margin-bottom: 20px; }
+        /* .thrust-num { font-size: 2.5rem; font-weight: 700; color: var(--border-color); line-height: 1; flex-shrink: 0; user-select: none; } */
+        .thrust-num { font-size: 2.5rem; font-weight: 700; color: var(--primary); line-height: 1; flex-shrink: 0; user-select: none ;}
+        .thrust-title { font-size: 1.3rem; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+        .thrust-icon { font-size: 1.6rem; color: var(--primary); margin-bottom: 4px; }
+        
+        .task-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 8px; }
+        .task-item { background: rgba(45,122,58,0.04); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 16px 18px; }
+        .task-item h5 { font-size: 0.9rem; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; }
+        .task-item p { font-size: 0.82rem; color: var(--text-light); }
+        
+        .country-flags { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+        .cflag { color: white; font-size: 0.7rem; font-weight: 600; padding: 2px 10px; border-radius: 100px; }
+        .cflag.au { background: #003f87; }
+        .cflag.jp { background: #bc002d; }
+        .cflag.in { background: #ff9933; }
+        .cflag.usa { background: #002868; }
+        .cflag.all { background: #555; }
+
+        /* ─── TEAM OVERVIEW ─── */
+        .team-institutions { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+        .inst-card {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: var(--radius-md); padding: 24px;
+            box-shadow: var(--shadow); transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .inst-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+        .inst-flag { font-size: 1.8rem; margin-bottom: 8px; }
+        .inst-country { font-size: 0.72rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-light); margin-bottom: 4px; }
+        .inst-name { font-weight: 700; color: var(--text-dark); font-size: 1rem; margin-bottom: 4px; }
+        .inst-abbr { color: var(--primary); font-size: 0.85rem; font-weight: 600; }
+
+        /* ─── TEAM MEMBERS ─── */
+        .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 28px; width: 100%; }.member-card { text-align: center; }
+        .member-img-wrap {
+            width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 14px;
+            overflow: hidden; border: 3px solid var(--border-color);
+            background: var(--border-color); transition: border-color 0.3s, transform 0.3s;
+        }
+        .member-card:hover .member-img-wrap { border-color: var(--primary); transform: scale(1.05); }
+        .member-initial {
+            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; font-weight: 700; color: var(--primary); background: rgba(45,122,58,0.1);
+        }
+        .member-name { font-weight: 600; font-size: 0.9rem; color: var(--text-dark); }
+        .member-role { font-size: 0.75rem; color: var(--primary); font-weight: 500; margin: 2px 0; }
+        .member-affil { font-size: 0.75rem; color: var(--text-light); }
+        
+        .country-section-label {
+            font-size: 1.1rem; font-weight: 700; color: var(--text-dark);
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 0; margin: 40px 0 20px; border-bottom: 2px solid var(--border-color);
+        }
+        .country-section-label .flag { font-size: 1.5rem; }
+
+        /* ─── SPONSORS ─── */
+        .logos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+            gap: 24px;
+            justify-content: center;
+            justify-items: center;           
+            width: 100%;
+        }
+
+        .logo-card {
+            background: var(--bg); 
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md); 
+            padding: 20px;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%;
+            max-width: 240px; 
+            min-height: 160px;
+        }
+        .logo-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+        .logo-card .flag { font-size: 1.8rem; }
+        .logo-card .org-name { font-size: 0.8rem; font-weight: 600; color: var(--text-dark); text-align: center; }
+        .logo-card .org-abbr { font-size: 0.7rem; color: var(--text-light); text-align: center; }
+
+        /* ─── FOOTER ─── */
+        footer { background: var(--text-dark); color: rgba(255,255,255,0.6); text-align: center; padding: 32px 24px; font-size: 0.85rem; }
+
+        /* ─── UTILITIES ─── */
+        .prose p { margin-bottom: 16px; color: var(--text-light); }
+        .prose p:last-child { margin-bottom: 0; }
+        .highlight { color: var(--primary); font-weight: 600; }
+
+        /* ─── ANIMATED FADE-IN ─── */
+        .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /*  Edge-to-Edge Footer Fixes */
+        footer {
+            background: var(--text-dark); 
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center; 
+            padding: 40px 24px; 
+            font-size: 0.85rem;
+            
+            /* ─── Alternative Full-Bleed Fix ─── */
+            width: 100%;
+            position: absolute;
+            left: 0;
+            box-sizing: border-box;
+            
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <div class="nav-logo-text">HARVEST</div>
+        <div class="nav-links" id="nav-links">
+            <a href="#top">Home</a>
+            <a href="#about">About</a>
+            <a href="#research">Research</a>
+            <a href="#team">Team</a>
+            <a href="#sponsors">Sponsors</a>
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox"/>
+                    <div class="slider">
+                        <i class="ri-sun-line"></i>
+                        <i class="ri-moon-line"></i>
+                    </div>
+                </label>
+            </div>
+        </div>
+        <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="ri-menu-line"></i></button>
+    </div>
+</nav>
+
+<section class="hero" id="top" style="background-image: linear-gradient(135deg, rgba(11, 31, 15, 0.88), rgba(26, 82, 38, 0.75)), url('assets/img/bg-2.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <div class="hero-content">
+        <div class="hero-badge"><i class="ri-leaf-line"></i> Quad Nations Collaboration · NSF · JST · CSIRO · ICAR</div>
+        <h1><span>HARVEST</span></h1>
+        <p class="hero-acronym">Holistic AI-powered Agricultural Response Validation and Early Prediction System across Territories</p>
+        <a href="#about" class="hero-cta"><i class="ri-seedling-line"></i> Explore the Project</a>
+        <div class="hero-scroll-indicator">
+            <a href="#about"><i class="ri-arrow-down-line"></i></a>
+        </div>
+    </div>
+</section>
+
+<section id="about">
+    <div class="container">
+        <div class="section-title">
+            <h2>About</h2>
+            <p>A Quad-nation collaboration addressing agriculture's greatest challenges through AI-driven validation</p>
+        </div>
+
+        <div class="typewriter-box" style="background: var(--card-bg); border: 1px solid var(--border-color); border-left: 4px solid var(--primary); border-radius: var(--radius-sm); padding: 14px 24px; box-shadow: var(--shadow); max-width: 800px; margin: 0 auto 40px; text-align: center; min-height: 3.5rem; display: flex; align-items: center; justify-content: center;">
+            <div class="typewriter-container" style="margin-bottom: 0; font-size: clamp(1rem, 2.2vw, 1.25rem); font-weight: 500; color: var(--primary);">
+                <span id="typewriter-text"></span><span class="typewriter-cursor">|</span>
+            </div>
+        </div>
+
+        <div class="about-grid fade-in">
+            <div>
+                <div class="about-slider">
+                    <div class="slider-track">
+                        <img src="assets/img/slider_1.jpeg" alt="Smart Agriculture Field">
+                        <img src="assets/img/slider_2.jpg" alt="UAV Drone Operations">
+                        <img src="assets/img/slider_3.jpg" alt="Harvest Plan">
+                    </div>
+                    <button class="slider-btn prev" id="slider-prev"><i class="ri-arrow-left-s-line"></i></button>
+                    <button class="slider-btn next" id="slider-next"><i class="ri-arrow-right-s-line"></i></button>
+                    <div class="slider-dots" id="slider-dots">
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                    <div class="about-visual-overlay">
+                        <span><i class="ri-drone-line"></i> &nbsp;UAV · Digital Twin · Edge AI · Sensors</span>
+                    </div>
+                </div>
+
+                <div class="stat-strip">
+                    <div class="stat-item" style="border-top: 4px solid var(--primary);"><div class="num">4</div><div class="lbl">Nations</div></div>
+                    <div class="stat-item" style="border-top: 4px solid var(--primary);"><div class="num">11</div><div class="lbl">Institutions</div></div>
+                    <div class="stat-item" style="border-top: 4px solid var(--primary);"><div class="num">21</div><div class="lbl">Researchers</div></div>
+                    <div class="stat-item" style="border-top: 4px solid var(--primary);"><div class="num">4</div><div class="lbl">Funding Agencies</div></div>
+                </div>
+            </div>
+
+            <div class="prose">
+                <div class="prose-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-left: 4px solid var(--primary); border-radius: var(--radius-md); padding: 28px; box-shadow: var(--shadow); margin-bottom: 24px;">
+                    <p>The <span class="highlight">HARVEST project</span> introduces an innovative framework to evaluate early prediction systems and response management strategies for <strong>maize and rice</strong> across the United States, Australia, India, and Japan. It addresses critical agrarian challenges, including <span class="highlight">insect pest and disease detection</span>, drought response, climate adaptation, precision fertilization, and irrigation optimization across diverse global ecosystems.</p>
+                    <p style="margin-bottom: 0;">By deploying IoT sensors, unmanned aerial vehicles (UAVs), and digital twins, HARVEST utilizes standardized, cross-regional protocols to significantly enhance agricultural <span class="highlight">efficiency, resilience, and sustainability</span>. Concurrently, the framework strictly governs large-scale farm data collection to guarantee transparency, equitable stakeholder participation, and sustained trust.</p>
+                </div>
+
+                <div class="tag-row">
+                    <span class="tag">Precision Agriculture</span>
+                    <span class="tag">UAV / Drones</span>
+                    <span class="tag">Digital Twins</span>
+                    <span class="tag">IoT Sensors</span>
+                    <span class="tag">Edge AI</span>
+                    <span class="tag">Federated Learning</span>
+                    <span class="tag">Pest Management</span>
+                    <span class="tag">Maize · Rice</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="research">
+    <div class="container">
+        <div class="section-title">
+            <h2>Research</h2>
+            <p>Four integrated thrusts, each decomposed into cross-national tasks with designated Lead and Supporting teams</p>
+        </div>
+
+        <div class="thrust-list">
+            <div class="thrust-card fade-in">
+                <div class="thrust-header">
+                    <div class="thrust-num" style="color: var(--primary); opacity: 0.85;">01</div>
+                    <div>
+                        <div class="thrust-title">Detection and Mitigation of Biotic and Abiotic Stress</div>
+                    </div>
+                </div>
+                <div class="task-grid">
+                    <div class="task-item">
+                        <h5>1.1 &nbsp;Automated FAW Trap &amp; Drone Bio-pesticide Spraying</h5>
+                        <p>Automated trapping systems for Fall Armyworm (FAW) detection combined with drone-based bio-pesticide delivery for precision pest control in the field.</p>
+                        <div class="task-teams" style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px; font-size: 0.8rem;">
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-dark); min-width: 60px;">Lead:</strong> <img src="assets/img/logos/us.svg" alt="USA" style="height: 14px; width: auto;"> <span>USA</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-light); min-width: 60px;">Support:</strong> <img src="assets/img/logos/in.svg" alt="India" style="height: 14px; width: auto;"> <span>India</span></div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <h5>1.2 &nbsp;In-field Molecular Diagnostics &amp; Spectral Disease Detection</h5>
+                        <p>LAMP-based molecular diagnostics coupled with spectral analysis for rapid, in-field identification of crop diseases and pathogens.</p>
+                        <div class="task-teams" style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px; font-size: 0.8rem;">
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-dark); min-width: 60px;">Lead:</strong> <img src="assets/img/logos/in.svg" alt="India" style="height: 14px; width: auto;"> <span>India</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-light); min-width: 60px;">Support:</strong> <img src="assets/img/logos/us.svg" alt="USA" style="height: 14px; width: auto;"> <span>USA</span></div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <h5>1.3 &nbsp;Spectral Analytics for Nutrient Stress in Rice</h5>
+                        <p>Hyperspectral and multispectral imaging pipelines to identify and quantify nutrient deficiencies and abiotic stress responses in rice crops.</p>
+                        <div class="task-teams" style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px; font-size: 0.8rem;">
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-dark); min-width: 60px;">Lead:</strong> <img src="assets/img/logos/in.svg" alt="India" style="height: 14px; width: auto;"> <span>India</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-light); min-width: 60px;">Support:</strong> <img src="assets/img/logos/us.svg" alt="USA" style="height: 14px; width: auto;"> <span>USA</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="thrust-card fade-in">
+                <div class="thrust-header">
+                    <div class="thrust-num" style="color: var(--primary); opacity: 0.85;">02</div>
+                    <div>
+                        <div class="thrust-title">Digital Twin for Data Collection, Computation and Prediction</div>
+                    </div>
+                </div>
+                <div class="task-grid">
+                    <div class="task-item">
+                        <h5>2.1 &nbsp;AI-Driven Agricultural Digital Twin Design</h5>
+                        <p>Design and modeling of high-fidelity digital twins of agricultural environments for simulation, monitoring, and predictive analytics.</p>
+                        <div class="task-teams" style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px; font-size: 0.8rem;">
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-dark); min-width: 60px;">Lead:</strong> <img src="assets/img/logos/jp.svg" alt="Japan" style="height: 14px; width: auto;"> <span>Japan</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;"><strong style="color: var(--text-light); min-width: 60px;">Support:</strong> <img src="assets/img/logos/us.svg" alt="USA" style="height: 14px; width: auto;"> <span>USA,</span> <img src="assets/img/logos/in.svg" alt="India" style="height: 14px; width: auto;"> <span>India</span></div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <h5>2.2 &nbsp;UAV-based Edge Computing &amp; Rural Field Connectivity</h5>
+                        <p>Low-latency edge computing pipelines aboard UAVs with resilient rural connectivity frameworks for real-time data collection in remote fields.</p>
+                        <div class="task-teams" style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px; font-size: 0.8rem;">
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-dark); min-width: 60px;">Lead:</strong> <img src="assets/img/logos/in.svg" alt="India" style="height: 14px; width: auto;"> <span>India</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;"><strong style="color: var(--text-light); min-width: 60px;">Support:</strong> <img src="assets/img/logos/jp.svg" alt="Japan" style="height: 14px; width: auto;"> <span>Japan,</span> <img src="assets/img/logos/us.svg" alt="USA" style="height: 14px; width: auto;"> <span>USA</span></div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <h5>2.3 &nbsp;Ephemeral-Orchestrated Secure Distributed Learning</h5>
+                        <p>Privacy-preserving, ephemeral federated learning architectures for secure, distributed model training across heterogeneous agricultural nodes.</p>
+                        <div class="task-teams" style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px; font-size: 0.8rem;">
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-dark); min-width: 60px;">Lead:</strong> <img src="assets/img/logos/us.svg" alt="USA" style="height: 14px; width: auto;"> <span>USA</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;"><strong style="color: var(--text-light); min-width: 60px;">Support:</strong> <img src="assets/img/logos/us.svg" alt="USA" style="height: 14px; width: auto;"> <span>USA,</span> <img src="assets/img/logos/in.svg" alt="India" style="height: 14px; width: auto;"> <span>India</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="thrust-card fade-in">
+                <div class="thrust-header">
+                    <div class="thrust-num" style="color: var(--primary); opacity: 0.85;">03</div>
+                    <div>
+                        <div class="thrust-title">Multimodal LLMs-based Transfer Learning</div>
+                    </div>
+                </div>
+                <div class="task-grid">
+                    <div class="task-item">
+                        <h5>3.1 &nbsp;Agriculture Large Vision-Language Models</h5>
+                        <p>Development and fine-tuning of multimodal large vision-language models (VLMs) tailored to agricultural image understanding, diagnosis, and advisory.</p>
+                        <div class="task-teams" style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px; font-size: 0.8rem;">
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-dark); min-width: 60px;">Lead:</strong> <img src="assets/img/logos/us.svg" alt="USA" style="height: 14px; width: auto;"> <span>USA</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;"><strong style="color: var(--text-light); min-width: 60px;">Support:</strong> <img src="assets/img/logos/au.svg" alt="Australia" style="height: 14px; width: auto;"> <span>Australia,</span> <img src="assets/img/logos/in.svg" alt="India" style="height: 14px; width: auto;"> <span>India</span></div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <h5>3.2 &nbsp;Few- and Zero-Shot Agriculture Adaptation</h5>
+                        <p>Cross-domain transfer and few/zero-shot adaptation strategies enabling models to generalize across crops, geographies, and environmental conditions with minimal labeled data.</p>
+                        <div class="task-teams" style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px; font-size: 0.8rem;">
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-dark); min-width: 60px;">Lead:</strong> <img src="assets/img/logos/us.svg" alt="USA" style="height: 14px; width: auto;"> <span>USA</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;"><strong style="color: var(--text-light); min-width: 60px;">Support:</strong> <img src="assets/img/logos/au.svg" alt="Australia" style="height: 14px; width: auto;"> <span>Australia,</span> <img src="assets/img/logos/in.svg" alt="India" style="height: 14px; width: auto;"> <span>India</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="thrust-card fade-in">
+                <div class="thrust-header">
+                    <div class="thrust-num" style="color: var(--primary); opacity: 0.85;">04</div>
+                    <div>
+                        <div class="thrust-title">Evaluation and Validation</div>
+                    </div>
+                </div>
+                <div class="task-grid">
+                    <div class="task-item">
+                        <h5>4.1 &nbsp;Multimodal Data Infrastructure</h5>
+                        <p>Standardized, cross-regional data collection infrastructure spanning satellite imagery, IoT sensors, UAV feeds, and laboratory data for consistent benchmarking.</p>
+                        <div class="task-teams" style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px; font-size: 0.8rem;">
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-dark); min-width: 60px;">Lead:</strong> <span style="font-weight: 500; color: var(--text-light);">All Collaborative Nations</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-light); min-width: 60px;">Support:</strong> <span style="font-weight: 500; color: var(--text-light);">All Collaborative Nations</span></div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <h5>4.2 &nbsp;Real-time Diagnostics &amp; Digital Twin Integration</h5>
+                        <p>Tight coupling of real-time field diagnostics with digital twin simulations for continuous validation and adaptation of predictive models.</p>
+                        <div class="task-teams" style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px; font-size: 0.8rem;">
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-dark); min-width: 60px;">Lead:</strong> <img src="assets/img/logos/jp.svg" alt="Japan" style="height: 14px; width: auto;"> <span>Japan</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-light); min-width: 60px;">Support:</strong> <span style="font-weight: 500; color: var(--text-light);">All Collaborative Nations</span></div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <h5>4.4 &nbsp;Field Pilots &amp; Scale-up Across Regions</h5>
+                        <p>End-to-end validation pilots across diverse agricultural environments in the US, India, Australia, and Japan to test scalability and regional adaptability of the HARVEST framework.</p>
+                        <div class="task-teams" style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px; font-size: 0.8rem;">
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-dark); min-width: 60px;">Lead:</strong> <span style="font-weight: 500; color: var(--text-light);">All Collaborative Nations</span></div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><strong style="color: var(--text-light); min-width: 60px;">Support:</strong> <span style="font-weight: 500; color: var(--text-light);">All Collaborative Nations</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="team">
+    <div class="container">
+        <div class="section-title">
+            <h2>The HARVEST Team</h2>
+            <p>A unique Quad collaboration spanning 9 institutions across 4 countries</p>
+        </div>
+
+        <div style="margin-top: 64px;">
+            <div class="section-title"><h2>Team Members</h2></div>
+
+            <!-- ─── UNITED STATES ─── -->
+            <div class="country-section-label"><span class="flag">🇺🇸</span> United States</div>
+            <div class="members-grid">
+                <div class="member-card">
+                    <a href="https://isc.mst.edu/people/ri/sdas/" target="_blank">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/sajal.jpg" alt="Sajal K. Das" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">SD</div>
+                        </div>
+                        <div class="member-name">Sajal K. Das</div>
+                        <div class="member-role">Lead PI</div>
+                        <div class="member-affil">Missouri University of Science and Technology</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://sites.google.com/ma.iitr.ac.in/vktanwar/home" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/vishesh.jpg" alt="Vishesh Kumar Tanwar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">VT</div>
+                        </div>
+                        <div class="member-name">Dr. Vishesh Kumar Tanwar</div>
+                        <div class="member-role">Co-PI</div>
+                        <div class="member-affil">Missouri University of Science and Technology</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://web.eecs.utk.edu/~qcao1/" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/charles.jpeg" alt="Charles Qing Cao" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">CC</div>
+                        </div>
+                        <div class="member-name">Charles Qing Cao</div>
+                        <div class="member-role">PI</div>
+                        <div class="member-affil">University of Tennessee, Knoxville</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://utia.tennessee.edu/person/?id=4823" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/shigetoshi.jpg" alt="Shigetoshi Eda" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">SE</div>
+                        </div>
+                        <div class="member-name">Shigetoshi Eda</div>
+                        <div class="member-role">Co-PI</div>
+                        <div class="member-affil">University of Tennessee Institute of Agriculture</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://utia.tennessee.edu/person/?id=11196" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/ethan.jpeg" alt="Ethan Trent Parker" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">EP</div>
+                        </div>
+                        <div class="member-name">Ethan Trent Parker</div>
+                        <div class="member-role">Collaborator</div>
+                        <div class="member-affil">East Tennessee Research and Education Center</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ─── JAPAN ─── -->
+            <div class="country-section-label"><span class="flag">🇯🇵</span> Japan</div>
+            <div class="members-grid">
+                <div class="member-card">
+                    <a href="https://mc.net.ist.osaka-u.ac.jp/people/h-yamagu/" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/hirozumi.jpg" alt="Hirozumi Yamaguchi" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">HY</div>
+                        </div>
+                        <div class="member-name">Hirozumi Yamaguchi</div>
+                        <div class="member-role">PI</div>
+                        <div class="member-affil">Osaka University</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://researchmap.jp/teruo.higashino" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/teruo.jpeg" alt="Teruo Higashino" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">TH</div>
+                        </div>
+                        <div class="member-name">Teruo Higashino</div>
+                        <div class="member-role">Co-PI</div>
+                        <div class="member-affil">Kyoto Tachibana University</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://www.green.shizuoka.ac.jp/staff_en/082/" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/hiroshi.jpg" alt="Hiroshi Mineno" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">HM</div>
+                        </div>
+                        <div class="member-name">Hiroshi Mineno</div>
+                        <div class="member-role">Co-PI</div>
+                        <div class="member-affil">Shizuoka University</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://researchmap.jp/keiichi.yasumoto?lang=en" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/keiichi.jpg" alt="Keiichi Yasumoto" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">KY</div>
+                        </div>
+                        <div class="member-name">Keiichi Yasumoto</div>
+                        <div class="member-role">Co-PI</div>
+                        <div class="member-affil">Nara Institute of Science and Technology</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ─── INDIA ─── -->
+            <div class="country-section-label"><span class="flag">🇮🇳</span> India</div>
+            <div class="members-grid">
+                <div class="member-card">
+                    <a href="https://www.nbair.res.in/node/215" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/kesavan.jpg" alt="Kesavan Subaharan" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">KS</div>
+                        </div>
+                        <div class="member-name">Dr. Kesavan Subaharan</div>
+                        <div class="member-role">PI</div>
+                        <div class="member-affil">ICAR - National Bureau of Agricultural Insect Resources</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://www.nbair.res.in/node/703" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/selvaraj.jpg" alt="K. Selvaraj" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">KS</div>
+                        </div>
+                        <div class="member-name">Dr. K. Selvaraj</div>
+                        <div class="member-role">Co-PI</div>
+                        <div class="member-affil">ICAR - National Bureau of Agricultural Insect Resources</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://www.nbair.res.in/node/704" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/amala.jpg" alt="Amala Udayakumar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">AU</div>
+                        </div>
+                        <div class="member-name">Dr. Amala Udayakumar</div>
+                        <div class="member-role">Co-PI</div>
+                        <div class="member-affil">ICAR - National Bureau of Agricultural Insect Resources</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://mecheng.iisc.ac.in/project/m-s-bobji/" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/bobji.jpg" alt="M. S. Bobji" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">MB</div>
+                        </div>
+                        <div class="member-name">M. S. Bobji</div>
+                        <div class="member-role">PI</div>
+                        <div class="member-affil">Indian Institute of Science, Bengaluru</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://www.samy101.com/" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/pandarasamy.jpg" alt="Pandarasamy Arjunan" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">PA</div>
+                        </div>
+                        <div class="member-name">Pandarasamy Arjunan</div>
+                        <div class="member-role">Co-PI</div>
+                        <div class="member-affil">Indian Institute of Science, Bengaluru</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://cds.iisc.ac.in/faculty/simmhan/" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/yogesh.jpg" alt="Yogesh Simmhan" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">YS</div>
+                        </div>
+                        <div class="member-name">Yogesh Simmhan</div>
+                        <div class="member-role">Co-PI</div>
+                        <div class="member-affil">Indian Institute of Science, Bengaluru</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://uasbangalore.irins.org/profile/197207" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/sreeman.jpg" alt="S. Sreeman" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">SS</div>
+                        </div>
+                        <div class="member-name">Sheshshayee Sreeman</div>
+                        <div class="member-role">PI</div>
+                        <div class="member-affil">University of Agricultural Sciences, Bengaluru</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://uasbangalore.irins.org/profile/406576" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/ramegowda.jpg" alt="Ramegowda" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">RV</div>
+                        </div>
+                        <div class="member-name">Ramegowda</div>
+                        <div class="member-role">Co-PI</div>
+                        <div class="member-affil">University of Agricultural Sciences, Bengaluru</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://iitbhu.ac.in/dept/cse/people/ajaycse" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/ajay.jpg" alt="Ajay Pratap" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">AP</div>
+                        </div>
+                        <div class="member-name">Ajay Pratap</div>
+                        <div class="member-role">PI</div>
+                        <div class="member-affil">Indian Institute of Technology (BHU), Varanasi</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ─── AUSTRALIA ─── -->
+            <div class="country-section-label"><span class="flag">🇦🇺</span> Australia</div>
+            <div class="members-grid">
+                <div class="member-card">
+                    <a href="https://findanexpert.unimelb.edu.au/profile/16503-marimuthu-palaniswami" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/marimuthu.jpg" alt="Marimuthu Palaniswami" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">MP</div>
+                        </div>
+                        <div class="member-name">Marimuthu Palaniswami</div>
+                        <div class="member-role">PI</div>
+                        <div class="member-affil">University of Melbourne</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://findanexpert.unimelb.edu.au/profile/500853-ranjith-r-unnithan" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/ranjith.jpeg" alt="Ranjith Unnithan" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">RU</div>
+                        </div>
+                        <div class="member-name">Ranjith Unnithan</div>
+                        <div class="member-role">Co-PI</div>
+                        <div class="member-affil">University of Melbourne</div>
+                    </a>
+                </div>
+                <div class="member-card">
+                    <a href="https://findanexpert.unimelb.edu.au/profile/413184-aravinda-s.-rao" onclick="return false;">
+                        <div class="member-img-wrap">
+                            <img src="assets/img/team/aravinda.jpeg" alt="Aravinda Rao" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="member-initial" style="display: none;">AR</div>
+                        </div>
+                        <div class="member-name">Aravinda Rao</div>
+                        <div class="member-role">Co-PI</div>
+                        <div class="member-affil">University of Melbourne</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── SPONSORS SECTION ─── -->
+<section id="sponsors">
+    <div class="container">
+        <div class="section-title">
+            <h2>Supported By</h2>
+            <p>Funded by national science agencies across four nations</p>
+        </div>
+        
+        <div class="logos-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 48px; justify-items: center; align-items: start; width: 100%;">
+            
+            <a href="https://www.nsf.gov" target="_blank" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; max-width: 260px; width: 100%;">
+                <img src="assets/img/logos/nsf_logo.jpg" alt="National Science Foundation Logo" style="max-height: 110px; width: auto; object-fit: contain; margin-bottom: 16px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <div class="org-name" style="font-size: 0.9rem; font-weight: 700; color: var(--text-dark); text-align: center; line-height: 1.3;">National Science Foundation</div>
+                <div class="org-abbr" style="font-size: 0.75rem; color: var(--text-light); text-align: center; margin-top: 4px; margin-bottom: 20px;">NSF · USA</div>
+                <img src="assets/img/logos/us.svg" alt="United States Flag" style="max-height: 110px; width: auto; object-fit: contain; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </a>
+
+            <a href="https://www.jst.go.jp/EN/" target="_blank" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; max-width: 260px; width: 100%;">
+                <img src="assets/img/logos/jst_logo.jpg" alt="Japan Science and Technology Agency Logo" style="max-height: 110px; width: auto; object-fit: contain; margin-bottom: 16px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <div class="org-name" style="font-size: 0.9rem; font-weight: 700; color: var(--text-dark); text-align: center; line-height: 1.3;">Japan Science and Technology Agency</div>
+                <div class="org-abbr" style="font-size: 0.75rem; color: var(--text-light); text-align: center; margin-top: 4px; margin-bottom: 20px;">JST · Japan</div>
+                <img src="assets/img/logos/jp.svg" alt="Japan Flag" style="max-height: 110px; width: auto; object-fit: contain; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </a>
+
+            <a href="https://www.csiro.au" target="_blank" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; max-width: 260px; width: 100%;">
+                <img src="assets/img/logos/csiro_logo.jpg" alt="CSIRO Logo" style="max-height: 110px; width: auto; object-fit: contain; margin-bottom: 16px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <div class="org-name" style="font-size: 0.9rem; font-weight: 700; color: var(--text-dark); text-align: center; line-height: 1.3;">Commonwealth Scientific &amp; Industrial Research Organisation</div>
+                <div class="org-abbr" style="font-size: 0.75rem; color: var(--text-light); text-align: center; margin-top: 4px; margin-bottom: 20px;">CSIRO · Australia</div>
+                <img src="assets/img/logos/au.svg" alt="Australia Flag" style="max-height: 110px; width: auto; object-fit: contain; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </a>
+
+            <a href="https://icar.org.in" target="_blank" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; max-width: 260px; width: 100%;">
+                <img src="assets/img/logos/icar_logo.jpg" alt="Indian Council of Agricultural Research Logo" style="max-height: 110px; width: auto; object-fit: contain; margin-bottom: 16px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <div class="org-name" style="font-size: 0.9rem; font-weight: 700; color: var(--text-dark); text-align: center; line-height: 1.3;">Indian Council of Agricultural Research</div>
+                <div class="org-abbr" style="font-size: 0.75rem; color: var(--text-light); text-align: center; margin-top: 4px; margin-bottom: 20px;">ICAR · India</div>
+                <img src="assets/img/logos/in.svg" alt="India Flag" style="max-height: 110px; width: auto; object-fit: contain; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<footer>
+        <p>© 2026 HARVEST Project · Quad Nations Agricultural AI Collaboration</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
